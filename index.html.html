@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camilo · Hitos de Fluidez</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#07091a;font-family:'Inter',sans-serif;color:#fff;padding:0 0 80px;position:relative;overflow-x:hidden;min-height:100vh}
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(100px);opacity:.13;z-index:0}
+.o1{width:500px;height:500px;background:#0f2d5e;top:-140px;left:-180px}
+.o2{width:400px;height:400px;background:#1a3a00;top:50%;right:-120px}
+.o3{width:320px;height:320px;background:#1f1050;bottom:150px;left:30%}
+
+.top-note{text-align:center;padding:28px 24px 0;position:relative;z-index:2}
+.top-note-inner{display:inline-block;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 18px;font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;max-width:520px}
+
+.hdr{text-align:center;padding:28px 20px 36px;position:relative;z-index:2}
+.badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#c9a84c;border:1px solid rgba(201,168,76,.35);border-radius:20px;padding:5px 16px;margin-bottom:16px;background:rgba(201,168,76,.06)}
+.cname{font-size:28px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:-.3px}
+.cgoal{font-size:14px;color:#fff;margin-bottom:28px;font-style:normal;opacity:.8}
+.prog-wrap{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:40px;padding:10px 20px}
+.prog-lbl{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.5px}
+.prog-bg{width:150px;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#a07820,#c9a84c);border-radius:4px;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.prog-pct{font-size:12px;color:#c9a84c;font-weight:600;min-width:32px}
+
+.tl{position:relative;max-width:700px;margin:0 auto;padding:0 20px;z-index:2}
+.spine{position:absolute;left:50%;transform:translateX(-50%);top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,.22) 6%,rgba(201,168,76,.1) 88%,transparent);z-index:0}
+.row{display:flex;align-items:flex-start;position:relative;margin:8px 0;z-index:1;min-height:10px}
+.side{width:calc(50% - 30px)}
+.sl{padding-right:14px}
+.sr{padding-left:14px}
+
+.node{position:absolute;left:50%;transform:translateX(-50%);top:22px;width:12px;height:12px;border-radius:50%;border:2px solid #c9a84c;background:#07091a;z-index:3;transition:transform .2s,box-shadow .2s,background .3s;cursor:pointer}
+.node:hover{transform:translateX(-50%) scale(1.5);box-shadow:0 0 14px rgba(201,168,76,.5)}
+.node.done{background:#c9a84c}
+
+.card{background:rgba(13,20,48,.92);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:16px 17px 16px 21px;position:relative;transition:transform .22s,border-color .3s,box-shadow .3s,background .3s;width:100%;display:block;cursor:pointer;user-select:none;-webkit-user-select:none}
+.card:hover{transform:translateY(-3px);border-color:rgba(201,168,76,.35);box-shadow:0 8px 28px rgba(201,168,76,.1)}
+.card.done{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.3)}
+.card.done:hover{border-color:rgba(201,168,76,.5);box-shadow:0 8px 28px rgba(201,168,76,.16)}
+
+.accent{position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:0 2px 2px 0;background:#c9a84c}
+.cdate{font-size:9px;letter-spacing:1.8px;text-transform:uppercase;font-weight:600;color:#c9a84c;margin-bottom:5px}
+.ctitle{font-size:13px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.3}
+.cdesc{font-size:11px;color:#fff;line-height:1.6;opacity:.7}
+.cdesc b{color:#fff;font-weight:700;opacity:1}
+
+.done-stamp{display:none;align-items:center;gap:5px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c9a84c;margin-top:10px;padding-top:10px;border-top:1px solid rgba(201,168,76,.15)}
+.card.done .done-stamp{display:inline-flex}
+
+.hint{font-size:10px;color:rgba(255,255,255,.2);text-align:center;margin:6px 0 14px;letter-spacing:.5px}
+.spacer{height:12px}
+
+.finish-wrap{max-width:700px;margin:32px auto 0;padding:0 20px;position:relative;z-index:2}
+.finish-line{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.3);border-radius:18px;padding:32px 28px;text-align:center;position:relative;overflow:hidden}
+.finish-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:200px;height:200px;background:rgba(201,168,76,.08);border-radius:50%;pointer-events:none;filter:blur(40px)}
+.finish-icon{width:52px;height:52px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.finish-title{font-size:22px;font-weight:700;color:#fff;margin-bottom:6px}
+.finish-name{font-size:14px;color:#c9a84c;font-weight:600;margin-bottom:10px;letter-spacing:.5px}
+.finish-desc{font-size:13px;color:#fff;opacity:.55;line-height:1.65;max-width:420px;margin:0 auto 20px}
+.finish-milestone{display:inline-block;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:10px;padding:12px 20px;font-size:12px;color:#fff;opacity:.75;line-height:1.6;max-width:460px}
+.finish-milestone strong{color:#c9a84c;font-weight:600;opacity:1}
+</style>
+</head>
+<body>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div class="top-note">
+  <div class="top-note-inner">
+    Esta es una muestra de tus hitos. Se actualizarán cuando el programa comience y tengamos una mejor idea de tus necesidades específicas.
+  </div>
+</div>
+
+<div class="hdr">
+  <div class="badge">Hitos de Fluidez</div>
+  <div class="cname">Camilo</div>
+  <div class="cgoal">Sentirte preparado y seguro en inglés para situaciones de trabajo.</div>
+  <div class="prog-wrap">
+    <span class="prog-lbl">Progreso del programa</span>
+    <div class="prog-bg"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+    <span class="prog-pct" id="pp">0%</span>
+  </div>
+</div>
+
+<div class="tl">
+  <div class="spine"></div>
+  <div class="hint">Toca una tarjeta para marcarla como completada</div>
+
+  <!-- Hito 1 -->
+  <div class="row">
+    <div class="side sl">
+      <div class="card" id="card-1" onclick="toggle(1)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 1 · 6 de junio</div>
+        <div class="ctitle">Presentación básica</div>
+        <div class="cdesc">Te presentas en inglés con tu nombre, cargo y empresa con confianza.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+    <div class="node" id="node-1" onclick="toggle(1)"></div>
+    <div class="side sr"></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 2 -->
+  <div class="row">
+    <div class="side sl"></div>
+    <div class="node" id="node-2" onclick="toggle(2)"></div>
+    <div class="side sr">
+      <div class="card" id="card-2" onclick="toggle(2)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 2 · 18 de junio</div>
+        <div class="ctitle">Cuenta tu historia</div>
+        <div class="cdesc">Describes tu trayectoria profesional en 3 oraciones sin pausas.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 3 -->
+  <div class="row">
+    <div class="side sl">
+      <div class="card" id="card-3" onclick="toggle(3)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 3 · 30 de junio</div>
+        <div class="ctitle">Tu rol</div>
+        <div class="cdesc">Hablas sobre tus responsabilidades actuales usando vocabulario de tu industria.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+    <div class="node" id="node-3" onclick="toggle(3)"></div>
+    <div class="side sr"></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 4 -->
+  <div class="row">
+    <div class="side sl"></div>
+    <div class="node" id="node-4" onclick="toggle(4)"></div>
+    <div class="side sr">
+      <div class="card" id="card-4" onclick="toggle(4)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 4 · 12 de julio</div>
+        <div class="ctitle">Tell Me About Yourself</div>
+        <div class="cdesc">Respondes "tell me about yourself" de principio a fin sin cambiar al español.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 5 -->
+  <div class="row">
+    <div class="side sl">
+      <div class="card" id="card-5" onclick="toggle(5)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 5 · 24 de julio</div>
+        <div class="ctitle">Sin perder el hilo</div>
+        <div class="cdesc">Explicas por qué estás interesado en una oportunidad sin perder el hilo.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+    <div class="node" id="node-5" onclick="toggle(5)"></div>
+    <div class="side sr"></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 6 -->
+  <div class="row">
+    <div class="side sl"></div>
+    <div class="node" id="node-6" onclick="toggle(6)"></div>
+    <div class="side sr">
+      <div class="card" id="card-6" onclick="toggle(6)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 6 · 5 de agosto</div>
+        <div class="ctitle">Pregunta inesperada</div>
+        <div class="cdesc">Respondes una pregunta de entrevista que no esperabas sin congelarte.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 7 -->
+  <div class="row">
+    <div class="side sl">
+      <div class="card" id="card-7" onclick="toggle(7)">
+        <div class="accent"></div>
+        <div class="cdate">Hito 7 · 17 de agosto</div>
+        <div class="ctitle">Conversación sin pausa</div>
+        <div class="cdesc">Mantienes una conversación de 3 minutos sobre tu vida diaria sin cortarla abruptamente.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+    <div class="node" id="node-7" onclick="toggle(7)"></div>
+    <div class="side sr"></div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <!-- Hito 8 -->
+  <div class="row">
+    <div class="side sl"></div>
+    <div class="node" id="node-8" onclick="toggle(8)" style="border-color:#c9a84c;box-shadow:0 0 0 3px rgba(201,168,76,.15)"></div>
+    <div class="side sr">
+      <div class="card" id="card-8" onclick="toggle(8)" style="border-color:rgba(201,168,76,.28);box-shadow:0 0 0 1px rgba(201,168,76,.1)">
+        <div class="accent"></div>
+        <div class="cdate" style="letter-spacing:2px">Hito 8 · 28 de agosto · <span style="opacity:.7">Meta final</span></div>
+        <div class="ctitle">Llamada sin pánico</div>
+        <div class="cdesc">Suena una llamada inesperada en inglés — la respondes, te presentas, y la manejas sin pánico.</div>
+        <div class="done-stamp"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Logrado</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="finish-wrap">
+  <div class="finish-line">
+    <div class="finish-glow"></div>
+    <div class="finish-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#c9a84c" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div class="finish-title">La meta final</div>
+    <div class="finish-name">Camilo · 28 de agosto</div>
+    <div class="finish-desc">Sentirte preparado y seguro en inglés para situaciones de trabajo.</div>
+    <div class="finish-milestone">
+      <strong>Hito final:</strong> Completas una simulación de entrevista de dos minutos en inglés — con fluidez, con confianza, y sin detenerte a buscar las palabras.
+    </div>
+  </div>
+</div>
+
+<script>
+var STORAGE_KEY = 'camilo_milestones_v1';
+var TOTAL = 8;
+var state = [false, false, false, false, false, false, false, false, false];
+
+function load() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length === state.length) {
+        state = parsed;
+      }
+    }
+  } catch(e) {}
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function pct() {
+  var done = state.filter(Boolean).length;
+  var p = Math.round((done / TOTAL) * 100);
+  document.getElementById('pf').style.width = p + '%';
+  document.getElementById('pp').textContent = p + '%';
+}
+
+function applyState() {
+  for (var i = 1; i <= TOTAL; i++) {
+    var card = document.getElementById('card-' + i);
+    var node = document.getElementById('node-' + i);
+    if (state[i]) {
+      card.classList.add('done');
+      node.classList.add('done');
+    } else {
+      card.classList.remove('done');
+      node.classList.remove('done');
+    }
+  }
+  pct();
+}
+
+function toggle(n) {
+  state[n] = !state[n];
+  save();
+  applyState();
+}
+
+load();
+applyState();
+</script>
+</body>
+</html>
